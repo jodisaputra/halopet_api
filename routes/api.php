@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CountryController;
 
 /*
@@ -30,3 +31,22 @@ Route::get('/countries/code/{code}', [CountryController::class, 'getByCode']);
 
 // Get country by ID
 Route::get('/countries/{id}', [CountryController::class, 'show']);
+
+
+//auth controller
+Route::prefix('auth')->group(function () {
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/google', [AuthController::class, 'handleGoogleLogin']);
+    Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api');
+});
+
+
+Route::middleware('jwt.auth')->group(function () {
+    Route::prefix('auth')->group(function () {
+        Route::get('/user', [AuthController::class, 'user']);
+        Route::post('/refresh', [AuthController::class, 'refresh']);
+        Route::post('/logout', [AuthController::class, 'logout']);
+    });
+});
+

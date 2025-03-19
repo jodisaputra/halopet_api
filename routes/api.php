@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\CountryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +18,15 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Get all countries
+Route::get('/countries', [CountryController::class, 'index']);
+
+// Search countries
+Route::get('/countries/search', [CountryController::class, 'search']);
+
+// Get country by code
+Route::get('/countries/code/{code}', [CountryController::class, 'getByCode']);
+
+// Get country by ID
+Route::get('/countries/{id}', [CountryController::class, 'show']);
